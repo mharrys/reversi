@@ -2,9 +2,10 @@ module Square
     ( Square(..)
     , occupied
     , occupiedBy
+    , flipPiece
     ) where
 
-import Piece (Piece(..))
+import Piece (Piece(..), opponent)
 
 -- | Describes a square of a board that may have a placed piece in it.
 data Square = Empty
@@ -24,3 +25,8 @@ occupied _     = True
 occupiedBy :: Square -> Piece -> Bool
 occupiedBy Empty        _ = False
 occupiedBy (Occupied a) b = a == b
+
+-- | Flip occupied piece to its opponent.
+flipPiece :: Square -> Square
+flipPiece Empty        = Empty
+flipPiece (Occupied x) = Occupied $ opponent x

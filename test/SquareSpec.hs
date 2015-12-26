@@ -20,3 +20,7 @@ spec = do
         occupiedBy Empty Black `shouldBe` False
         occupiedBy (Occupied Black) Black `shouldBe` True
         occupiedBy (Occupied White) Black `shouldBe` False
+    it "should flip occupied piece" $ do
+        flipPiece Empty `shouldBe` Empty
+        flipPiece (Occupied Black) `shouldBe` Occupied White
+        flipPiece (Occupied White) `shouldBe` Occupied Black
