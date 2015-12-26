@@ -15,4 +15,4 @@ instance Show Piece where
 -- | Return piece opponent.
 opponent :: Piece -> Piece
 opponent Black = White
-opoonent White = Black
+opponent White = Black

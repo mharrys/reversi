@@ -12,3 +12,6 @@ spec = do
     it "should be represented as a string" $ do
         show Black `shouldBe` "b"
         show White `shouldBe` "w"
+    it "should give its opponent" $ do
+        opponent Black `shouldBe` White
+        opponent White `shouldBe` Black
