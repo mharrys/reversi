@@ -24,9 +24,9 @@ directions = [w, e, n, s, n . w, n . e, s . w, s . e]
     s (r, c) = (r + 1, c)
 
 -- | Return points if moving in specified direction from specified point
--- while within limit.
+-- while within boundary.
 directionPoints :: Point -> Direction -> Boundary -> [Point]
-directionPoints p direction limit = takeWhile limit ps
+directionPoints p direction boundary = takeWhile boundary ps
   where
     ps = tail $ iterate direction p
 
