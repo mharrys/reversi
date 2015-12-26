@@ -1,12 +1,26 @@
 module Square
     ( Square(..)
+    , occupied
+    , occupiedBy
     ) where
 
 import Piece (Piece(..))
 
 -- | Describes a square of a board that may have a placed piece in it.
-data Square = Square (Maybe Piece) deriving (Eq)
+data Square = Empty
+            | Occupied Piece
+            deriving (Eq)
 
 instance Show Square where
-    show (Square Nothing)  = "."
-    show (Square (Just x)) = show x
+    show Empty        = "."
+    show (Occupied x) = show x
+
+-- | Validate if square is occupied by a board piece.
+occupied :: Square -> Bool
+occupied Empty = False
+occupied _     = True
+
+-- | Valied if square is occupied by specified board piece.
+occupiedBy :: Square -> Piece -> Bool
+occupiedBy Empty        _ = False
+occupiedBy (Occupied a) b = a == b
