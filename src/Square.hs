@@ -8,5 +8,5 @@ import Piece (Piece(..))
 data Square = Square (Maybe Piece) deriving (Eq)
 
 instance Show Square where
-    show (Square Nothing)  = " "
+    show (Square Nothing)  = "."
     show (Square (Just x)) = show x
