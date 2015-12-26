@@ -1,5 +1,6 @@
 module Piece
     ( Piece(..)
+    , opponent
     ) where
 
 -- | Describes a playable board piece.
@@ -10,3 +11,8 @@ data Piece = Black
 instance Show Piece where
     show Black = "b"
     show White = "w"
+
+-- | Return piece opponent.
+opponent :: Piece -> Piece
+opponent Black = White
+opoonent White = Black
