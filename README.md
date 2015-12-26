@@ -1,6 +1,6 @@
 Reversi
 =======
-Implementation of Reversi in Haskell which is a classic board game.
+Implementation of the classic board game Reversi in Haskell.
 
 How-to
 ------
