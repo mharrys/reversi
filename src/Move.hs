@@ -1,5 +1,7 @@
 module Move
     ( Move(..)
+    , Boundary
+    , Direction
     , west
     , east
     , north
@@ -9,12 +11,11 @@ module Move
     , southWest
     , southEast
     , directions
-    , move
+    , pointsInDirection
     ) where
 
-import Board (Point, Cell, Board, cell, cells, inside)
+import Board (Point)
 import Piece (Piece(..))
-import Square (Square(..), occupied, occupiedBy)
 
 data Move = Skip
           | Move Piece Point
@@ -70,30 +71,7 @@ directions =
 
 -- | Return points if moving in specified direction from specified point
 -- while within boundary.
-directionPoints :: Point -> Direction -> Boundary -> [Point]
-directionPoints p direction boundary = takeWhile boundary ps
+pointsInDirection :: Point -> Direction -> Boundary -> [Point]
+pointsInDirection p direction boundary = takeWhile boundary ps
   where
     ps = tail $ iterate direction p
-
--- | Return cells from specified cells that specified board piece captures.
---
--- This assumes that specified cells are placed in one direction.
-captures :: Piece -> [Cell] -> [Cell]
-captures piece ps = captures' ps []
-  where
-    captures' :: [Cell] -> [Cell] -> [Cell]
-    captures' []      _ = []
-    captures' (x:xs) acc
-        | not $ occupied s   = []
-        | occupiedBy s piece = acc
-        | otherwise          = captures' xs (x:acc)
-      where
-        (_, s) = x
-
--- | Return cells captured from specified move on specified board.
-move :: Move -> Board -> [Cell]
-move Skip           _ = []
-move (Move piece p) b = concatMap (captures piece) ps
-  where
-    -- all possible directions from position converted to list of cells
-    ps = map (\d -> map (cell b) (directionPoints p d (inside b))) directions
