@@ -2,6 +2,7 @@ module BoardSpec where
 
 import Test.Hspec
 
+import Coord
 import Board
 import Square
 import Piece
@@ -19,7 +20,7 @@ spec =
         it "should have 60 unoccupied cells" $
             length (unoccupiedCells standardBoard) `shouldBe` 60
         it "should have correct piece placement" $ do
-            snd (cell standardBoard (3, 3)) `shouldBe` Occupied White
-            snd (cell standardBoard (4, 4)) `shouldBe` Occupied White
-            snd (cell standardBoard (3, 4)) `shouldBe` Occupied Black
-            snd (cell standardBoard (4, 3)) `shouldBe` Occupied Black
+            snd (cell standardBoard (Coord 3 3)) `shouldBe` Occupied White
+            snd (cell standardBoard (Coord 4 4)) `shouldBe` Occupied White
+            snd (cell standardBoard (Coord 3 4)) `shouldBe` Occupied Black
+            snd (cell standardBoard (Coord 4 3)) `shouldBe` Occupied Black

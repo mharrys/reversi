@@ -2,6 +2,7 @@ module MoveSpec where
 
 import Test.Hspec
 
+import Coord
 import Move
 
 main :: IO ()
@@ -10,70 +11,70 @@ main = hspec spec
 spec :: Spec
 spec = do
     it "should step west" $ do
-        west (0, 0) `shouldBe` (0, -1)
-        west (0, -1) `shouldBe` (0, -2)
+        west (Coord 0 0) `shouldBe` Coord 0 (-1)
+        west (Coord 0 (-1)) `shouldBe` Coord 0 (-2)
     it "should step east" $ do
-        east (0, 0) `shouldBe` (0, 1)
-        east (0, 1) `shouldBe` (0, 2)
+        east (Coord 0 0) `shouldBe` Coord 0 1
+        east (Coord 0 1) `shouldBe` Coord 0 2
     it "should step north" $ do
-        north (0, 0) `shouldBe` (-1, 0)
-        north (-1, 0) `shouldBe` (-2, 0)
+        north (Coord 0 0) `shouldBe` Coord (-1) 0
+        north (Coord (-1) 0) `shouldBe` Coord (-2) 0
     it "should step south" $ do
-        south (0, 0) `shouldBe` (1, 0)
-        south (1, 0) `shouldBe` (2, 0)
+        south (Coord 0 0) `shouldBe` Coord 1 0
+        south (Coord 1 0) `shouldBe` Coord 2 0
 
     it "should step north west" $ do
-        northWest (0, 0) `shouldBe` (-1, -1)
-        northWest (-1, -1) `shouldBe` (-2, -2)
+        northWest (Coord 0 0) `shouldBe` Coord (-1) (-1)
+        northWest (Coord (-1) (-1)) `shouldBe` Coord (-2) (-2)
     it "should step north east" $ do
-        northEast (0, 0) `shouldBe` (-1, 1)
-        northEast (-1, 1) `shouldBe` (-2, 2)
+        northEast (Coord 0 0) `shouldBe` Coord (-1) 1
+        northEast (Coord (-1) 1) `shouldBe` Coord (-2) 2
     it "should step south west" $ do
-        southWest (0, 0) `shouldBe` (1, -1)
-        southWest (1, -1) `shouldBe` (2, -2)
+        southWest (Coord 0 0) `shouldBe` Coord 1 (-1)
+        southWest (Coord 1 (-1)) `shouldBe` Coord 2 (-2)
     it "should step south east" $ do
-        southEast (0, 0) `shouldBe` (1, 1)
-        southEast (1, 1) `shouldBe` (2, 2)
+        southEast (Coord 0 0) `shouldBe` Coord 1 1
+        southEast (Coord 1 1) `shouldBe` Coord 2 2
 
     it "should walk west" $ do
-        let from = (0, 3)
-            boundary (x, y) = x >= 0 && y >= 0
-            expected = [(0, 2), (0, 1), (0, 0)]
+        let from = Coord 0 3
+            boundary (Coord x y) = x >= 0 && y >= 0
+            expected = [Coord 0 2, Coord 0 1, Coord 0 0]
         pointsInDirection from west boundary `shouldBe` expected
     it "should walk east" $ do
-        let from = (0, 0)
-            boundary (x, y) = x >= 0 && y <= 3
-            expected = [(0, 1), (0, 2), (0, 3)]
+        let from = Coord 0 0
+            boundary (Coord x y) = x >= 0 && y <= 3
+            expected = [Coord 0 1, Coord 0 2, Coord 0 3]
         pointsInDirection from east boundary `shouldBe` expected
     it "should walk north" $ do
-        let from = (3, 0)
-            boundary (x, y) = x >= 0 && y >= 0
-            expected = [(2, 0), (1, 0), (0, 0)]
+        let from = Coord 3 0
+            boundary (Coord x y) = x >= 0 && y >= 0
+            expected = [Coord 2 0, Coord 1 0, Coord 0 0]
         pointsInDirection from north boundary `shouldBe` expected
     it "should walk south" $ do
-        let from = (0, 0)
-            boundary (x, y) = x <= 3 && y >= 0
-            expected = [(1, 0), (2, 0), (3, 0)]
+        let from = Coord 0 0
+            boundary (Coord x y) = x <= 3 && y >= 0
+            expected = [Coord 1 0, Coord 2 0, Coord 3 0]
         pointsInDirection from south boundary `shouldBe` expected
 
     it "should walk north west" $ do
-        let from = (3, 3)
-            boundary (x, y) = x >= 0 && y >= 0
-            expected = [(2, 2), (1, 1), (0, 0)]
+        let from = Coord 3 3
+            boundary (Coord x y) = x >= 0 && y >= 0
+            expected = [Coord 2 2, Coord 1 1, Coord 0 0]
         pointsInDirection from northWest boundary `shouldBe` expected
     it "should walk north east" $ do
-        let from = (3, 3)
-            boundary (x, y) = x >= 0 && y <= 6
-            expected = [(2, 4), (1, 5), (0, 6)]
+        let from = Coord 3 3
+            boundary (Coord x y) = x >= 0 && y <= 6
+            expected = [Coord 2 4, Coord 1 5, Coord 0 6]
         pointsInDirection from northEast boundary `shouldBe` expected
 
     it "should walk south west" $ do
-        let from = (3, 3)
-            boundary (x, y) = x <= 6 && y >= 0
-            expected = [(4, 2), (5, 1), (6, 0)]
+        let from = Coord 3 3
+            boundary (Coord x y) = x <= 6 && y >= 0
+            expected = [Coord 4 2, Coord 5 1, Coord 6 0]
         pointsInDirection from southWest boundary `shouldBe` expected
     it "should walk south east" $ do
-        let from = (3, 3)
-            boundary (x, y) = x <= 6 && y <= 6
-            expected = [(4, 4), (5, 5), (6, 6)]
+        let from = Coord 3 3
+            boundary (Coord x y) = x <= 6 && y <= 6
+            expected = [Coord 4 4, Coord 5 5, Coord 6 6]
         pointsInDirection from southEast boundary `shouldBe` expected

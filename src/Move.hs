@@ -14,31 +14,31 @@ module Move
     , pointsInDirection
     ) where
 
-import Board (Point)
+import Coord (Coord(..))
 import Piece (Piece(..))
 
 data Move = Skip
-          | Move Piece Point
+          | Move Piece Coord
           deriving (Show, Eq)
 
-type Boundary  = Point -> Bool
-type Direction = Point -> Point
+type Boundary  = Coord -> Bool
+type Direction = Coord -> Coord
 
 -- | Step west.
 west :: Direction
-west (row, col) = (row, col - 1)
+west (Coord row col) = Coord row (col - 1)
 
 -- | Step east.
 east :: Direction
-east (row, col) = (row, col + 1)
+east (Coord row col) = Coord row (col + 1)
 
 -- | Step north.
 north :: Direction
-north (row, col) = (row - 1, col)
+north (Coord row col) = Coord (row - 1) col
 
 -- | Step south.
 south :: Direction
-south (row, col) = (row + 1, col)
+south (Coord row col) = Coord (row + 1) col
 
 -- | Step north west.
 northWest :: Direction
@@ -71,7 +71,7 @@ directions =
 
 -- | Return visited points when walking in direction from given point while
 -- staying within boundary.
-pointsInDirection :: Point -> Direction -> Boundary -> [Point]
+pointsInDirection :: Coord -> Direction -> Boundary -> [Coord]
 pointsInDirection p direction boundary = takeWhile boundary ps
   where
     ps = tail $ iterate direction p

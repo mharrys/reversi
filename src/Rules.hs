@@ -1,6 +1,7 @@
 module Rules where
 
-import Board (Board, Point, Cell, cell, inside, unoccupiedCells)
+import Board (Board, Cell, cell, inside, unoccupiedCells)
+import Coord (Coord)
 import Move (Move(..), Direction, directions, pointsInDirection)
 import Piece (Piece)
 import Square (Square(..), occupied, occupiedBy)
@@ -25,10 +26,10 @@ nodesToFlip (Move piece p) b = concatMap (\x -> captures x []) ps
     ps :: [[Cell]]
     ps = map (toCells . pointsInDir) directions
 
-    toCells :: [Point] -> [Cell]
+    toCells :: [Coord] -> [Cell]
     toCells = map (cell b)
 
-    pointsInDir :: Direction -> [Point]
+    pointsInDir :: Direction -> [Coord]
     pointsInDir d = pointsInDirection p d (inside b)
 
 -- | Validate if move is allowed.
