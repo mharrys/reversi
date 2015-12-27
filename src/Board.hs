@@ -53,7 +53,7 @@ cells = assocs
 
 -- | Validate if position is within board limit.
 inside :: Board -> (Int, Int) -> Bool
-inside b = inRange (bounds b)
+inside b p = elem p $ indices b
 
 -- | Validate if cell is occupied.
 occupiedCell :: Cell -> Bool
