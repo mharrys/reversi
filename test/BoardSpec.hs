@@ -13,14 +13,18 @@ main = hspec spec
 spec :: Spec
 spec =
     context "standard board" $ do
+        let b = standardBoard
         it "should have 64 cells" $
-            length (cells standardBoard) `shouldBe` 64
+            length (cells b) `shouldBe` 64
         it "should have 4 occupied cells" $
-            length (occupiedCells standardBoard) `shouldBe` 4
+            length (occupiedCells b) `shouldBe` 4
         it "should have 60 unoccupied cells" $
-            length (unoccupiedCells standardBoard) `shouldBe` 60
+            length (unoccupiedCells b) `shouldBe` 60
         it "should have correct piece placement" $ do
-            snd (cell standardBoard (Coord 3 3)) `shouldBe` Occupied White
-            snd (cell standardBoard (Coord 4 4)) `shouldBe` Occupied White
-            snd (cell standardBoard (Coord 3 4)) `shouldBe` Occupied Black
-            snd (cell standardBoard (Coord 4 3)) `shouldBe` Occupied Black
+            hasPiece b 3 3 White
+            hasPiece b 4 4 White
+            hasPiece b 3 4 Black
+            hasPiece b 4 3 Black
+
+hasPiece :: Board -> Int -> Int -> Piece -> Expectation
+hasPiece b x y p = snd (cell b (Coord x y)) `shouldBe` Occupied p

@@ -13,21 +13,30 @@ main = hspec spec
 spec :: Spec
 spec = do
     it "should be represented as a string" $ do
-        show (Coord 0 0) `shouldBe` "a1"
-        show (Coord 3 4) `shouldBe` "e4"
-        show (Coord 7 7) `shouldBe` "h8"
-        show (Coord 13 20) `shouldBe` "u14"
+        string 0 0 "a1"
+        string 3 4 "e4"
+        string 7 7 "h8"
+        string 13 20 "u14"
     it "should accept valid input" $ do
-        readMaybeCoord "a1" `shouldBe` Just (Coord 0 0)
-        readMaybeCoord "z1" `shouldBe` Just (Coord 0 25)
-        readMaybeCoord "a26" `shouldBe` Just (Coord 25 0)
-        readMaybeCoord "e4" `shouldBe` Just (Coord 3 4)
+        coord "a1" 0 0
+        coord "z1" 0 25
+        coord "a26" 25 0
+        coord "e4" 3 4
     it "should not accept invalid input" $ do
-        readMaybeCoord "a0" `shouldBe` Nothing
-        readMaybeCoord "aa1" `shouldBe` Nothing
-        readMaybeCoord "1a" `shouldBe` Nothing
-        readMaybeCoord "g1." `shouldBe` Nothing
-        readMaybeCoord "c1.0" `shouldBe` Nothing
-        readMaybeCoord "11" `shouldBe` Nothing
-        readMaybeCoord "gl" `shouldBe` Nothing
-        readMaybeCoord "" `shouldBe` Nothing
+        nothing "a0"
+        nothing "aa1"
+        nothing "1a"
+        nothing "g1."
+        nothing "c1.0"
+        nothing "11"
+        nothing "gl"
+        nothing ""
+
+string :: Int -> Int -> String -> Expectation
+string x y s = show (Coord x y) `shouldBe` s
+
+coord :: String -> Int -> Int -> Expectation
+coord s x y = readMaybeCoord s `shouldBe` Just (Coord x y)
+
+nothing :: String -> Expectation
+nothing s = readMaybeCoord s `shouldBe` Nothing

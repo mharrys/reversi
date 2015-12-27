@@ -14,20 +14,27 @@ main = hspec spec
 
 spec :: Spec
 spec =
-    context "standard board" $
+    context "standard board" $ do
+        let b = standardBoard
         context "initial state" $ do
             it "should return correct captures on initial state" $ do
-                nodesToFlip (Move Black (Coord 3 2)) standardBoard `shouldBe` [(Coord 3 3, Occupied White)]
-                nodesToFlip (Move Black (Coord 2 3)) standardBoard `shouldBe` [(Coord 3 3, Occupied White)]
-                nodesToFlip (Move Black (Coord 5 4)) standardBoard `shouldBe` [(Coord 4 4, Occupied White)]
-                nodesToFlip (Move Black (Coord 4 5)) standardBoard `shouldBe` [(Coord 4 4, Occupied White)]
-                nodesToFlip (Move White (Coord 2 4)) standardBoard `shouldBe` [(Coord 3 4, Occupied Black)]
-                nodesToFlip (Move White (Coord 3 5)) standardBoard `shouldBe` [(Coord 3 4, Occupied Black)]
-                nodesToFlip (Move White (Coord 4 2)) standardBoard `shouldBe` [(Coord 4 3, Occupied Black)]
-                nodesToFlip (Move White (Coord 5 3)) standardBoard `shouldBe` [(Coord 4 3, Occupied Black)]
-                nodesToFlip (Move White (Coord 0 0)) standardBoard `shouldBe` []
-                nodesToFlip (Move White (Coord 3 2)) standardBoard `shouldBe` []
-                nodesToFlip (Move Black (Coord 2 4)) standardBoard `shouldBe` []
+                cmpFlips Black 3 2 b [Coord 3 3]
+                cmpFlips Black 2 3 b [Coord 3 3]
+                cmpFlips Black 5 4 b [Coord 4 4]
+                cmpFlips Black 4 5 b [Coord 4 4]
+                cmpFlips White 2 4 b [Coord 3 4]
+                cmpFlips White 3 5 b [Coord 3 4]
+                cmpFlips White 4 2 b [Coord 4 3]
+                cmpFlips White 5 3 b [Coord 4 3]
+                cmpFlips White 0 0 b []
+                cmpFlips White 3 2 b []
+                cmpFlips Black 2 4 b []
             it "should have valid moves for both players" $ do
-                hasValidMove White standardBoard `shouldBe` True
-                hasValidMove Black standardBoard `shouldBe` True
+                hasValidMove White b `shouldBe` True
+                hasValidMove Black b `shouldBe` True
+
+cmpFlips :: Piece -> Int -> Int -> Board -> [Coord] -> Expectation
+cmpFlips p x y b cs = nodesToFlip move b `shouldBe` expected
+  where
+    move     = Move p (Coord x y)
+    expected = zip cs $ replicate (length cs) (Occupied (opponent p))
