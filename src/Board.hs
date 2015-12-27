@@ -7,8 +7,8 @@ module Board
     , cell
     , cells
     , inside
-    , occupiedSquares
-    , emptySquares
+    , occupiedCells
+    , unoccupiedCells
     ) where
 
 import Data.Array
@@ -55,10 +55,14 @@ cells = assocs
 inside :: Board -> (Int, Int) -> Bool
 inside b = inRange (bounds b)
 
--- | Return list of squares occupied by a board piece.
-occupiedSquares :: Board -> [Square]
-occupiedSquares b = filter occupied (elems b)
+-- | Validate if cell is occupied.
+occupiedCell :: Cell -> Bool
+occupiedCell (_, s) = occupied s
 
--- | Return list of unoccupied squares.
-emptySquares :: Board -> [Square]
-emptySquares b = filter (not . occupied) (elems b)
+-- | Return list of squares occupied by a board piece.
+occupiedCells :: Board -> [Cell]
+occupiedCells b = filter occupiedCell (cells b)
+
+-- | Return list of unoccupied cells.
+unoccupiedCells :: Board -> [Cell]
+unoccupiedCells b = filter (not . occupiedCell) (cells b)
