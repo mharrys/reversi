@@ -12,12 +12,12 @@ main = hspec spec
 spec :: Spec
 spec =
     context "standard board" $ do
-        it "should have 64 squares" $
+        it "should have 64 cells" $
             length (cells standardBoard) `shouldBe` 64
-        it "should have 4 occupied squares" $
-            length (occupiedSquares standardBoard) `shouldBe` 4
-        it "should have 60 empty squares" $
-            length (emptySquares standardBoard) `shouldBe` 60
+        it "should have 4 occupied cells" $
+            length (occupiedCells standardBoard) `shouldBe` 4
+        it "should have 60 unoccupied cells" $
+            length (unoccupiedCells standardBoard) `shouldBe` 60
         it "should have correct piece placement" $ do
             snd (cell standardBoard (3, 3)) `shouldBe` Occupied White
             snd (cell standardBoard (4, 4)) `shouldBe` Occupied White
