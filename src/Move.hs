@@ -69,8 +69,8 @@ directions =
     , southEast
     ]
 
--- | Return points if moving in specified direction from specified point
--- while within boundary.
+-- | Return visited points when walking in direction from given point while
+-- staying within boundary.
 pointsInDirection :: Point -> Direction -> Boundary -> [Point]
 pointsInDirection p direction boundary = takeWhile boundary ps
   where
