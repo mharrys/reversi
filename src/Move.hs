@@ -1,5 +1,14 @@
 module Move
     ( Move(..)
+    , west
+    , east
+    , north
+    , south
+    , northWest
+    , northEast
+    , southWest
+    , southEast
+    , directions
     , move
     ) where
 
@@ -14,14 +23,50 @@ data Move = Skip
 type Boundary  = Point -> Bool
 type Direction = Point -> Point
 
--- | Describes all possible directions for a piece to capture other pieces.
+-- | Step west.
+west :: Direction
+west (row, col) = (row, col - 1)
+
+-- | Step east.
+east :: Direction
+east (row, col) = (row, col + 1)
+
+-- | Step north.
+north :: Direction
+north (row, col) = (row - 1, col)
+
+-- | Step south.
+south :: Direction
+south (row, col) = (row + 1, col)
+
+-- | Step north west.
+northWest :: Direction
+northWest = north . west
+
+-- | Step north east.
+northEast :: Direction
+northEast = north . east
+
+-- | Step south west.
+southWest :: Direction
+southWest = south . west
+
+-- | Step south east.
+southEast :: Direction
+southEast = south . east
+
+-- | All directions a piece can capture other pieces.
 directions :: [Direction]
-directions = [w, e, n, s, n . w, n . e, s . w, s . e]
-   where
-    w (r, c) = (r, c - 1)
-    e (r, c) = (r, c + 1)
-    n (r, c) = (r - 1, c)
-    s (r, c) = (r + 1, c)
+directions =
+    [ west
+    , east
+    , north
+    , south
+    , northWest
+    , northEast
+    , southWest
+    , southEast
+    ]
 
 -- | Return points if moving in specified direction from specified point
 -- while within boundary.
