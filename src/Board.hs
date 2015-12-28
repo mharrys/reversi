@@ -20,6 +20,8 @@ import Coord (Coord(..))
 import Piece (Piece(..), opponent)
 
 type Node  = (Coord, Maybe Piece)
+
+-- | Describes a collection of nodes with coordinates.
 data Board = Board (Array Coord (Maybe Piece))
 
 instance Show Board where
