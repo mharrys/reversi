@@ -11,7 +11,7 @@ module Move
     , southWest
     , southEast
     , directions
-    , pointsInDirection
+    , coordsInDirection
     ) where
 
 import Coord (Coord(..))
@@ -69,9 +69,9 @@ directions =
     , southEast
     ]
 
--- | Return visited points when walking in direction from given point while
+-- | Return visited coords when walking in direction from given coord while
 -- staying within boundary.
-pointsInDirection :: Coord -> Direction -> Boundary -> [Coord]
-pointsInDirection p direction boundary = takeWhile boundary ps
+coordsInDirection :: Coord -> Direction -> Boundary -> [Coord]
+coordsInDirection c direction boundary = takeWhile boundary cs
   where
-    ps = tail $ iterate direction p
+    cs = tail $ iterate direction c

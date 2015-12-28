@@ -2,7 +2,7 @@ module Rules where
 
 import Board (Board, Node, getNode, hasNode, isOccupied, isOccupiedBy, getUnoccupiedNodes)
 import Coord (Coord)
-import Move (Move(..), Direction, directions, pointsInDirection)
+import Move (Move(..), Direction, directions, coordsInDirection)
 import Piece (Piece)
 
 -- | Return nodes that will be flipped for a move at given board.
@@ -20,13 +20,13 @@ nodesToFlip (Move piece p) b = concatMap (\x -> captures x []) ps
 
     -- all possible directions from coord
     ps :: [[Node]]
-    ps = map (toNodes . pointsInDir) directions
+    ps = map (toNodes . coords) directions
 
     toNodes :: [Coord] -> [Node]
     toNodes = map (getNode b)
 
-    pointsInDir :: Direction -> [Coord]
-    pointsInDir d = pointsInDirection p d (hasNode b)
+    coords :: Direction -> [Coord]
+    coords d = coordsInDirection p d (hasNode b)
 
 -- | Validate if move is allowed.
 isMoveValid :: Move -> Board -> Bool
