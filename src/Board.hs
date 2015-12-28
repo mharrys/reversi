@@ -14,6 +14,7 @@ module Board
     ) where
 
 import Data.Array
+import Data.List (intercalate)
 import Data.Maybe (isJust)
 
 import Coord (Coord(..))
@@ -25,10 +26,38 @@ type Node  = (Coord, Maybe Piece)
 data Board = Board (Array Coord (Maybe Piece))
 
 instance Show Board where
-    show (Board b) = foldl (\acc x -> acc ++ showNode x) "" (elems b)
+    show board@(Board b) =
+        -- generate a grid of nodes and check if node appears i board in order
+        -- to allow other board shapes
+        concatMap toStr $ range $ bounds b
       where
-        showNode Nothing  = "."
-        showNode (Just x) = show x
+        toStr :: Coord -> String
+        toStr p
+            | hasNode board p = nodeStr (getNode board p)
+            | otherwise       = " "
+
+        nodeStr (_, Nothing) = "."
+        nodeStr (_, Just x)  = show x
+
+-- | Convert board to a better human readable string representation.
+toPrettyStr :: Board -> String
+toPrettyStr board@(Board b) = cols ++ rows
+  where
+    cols    = "  " ++ take (c + 1) ['a'..] ++ "\n"
+    rows    = intercalate "\n" rowChunks
+
+    rowChunks :: [String]
+    rowChunks = zipWith rowN ['1'..] $ chunks (show board) [] []
+      where
+        rowN n row = n : ' ' : row
+
+    chunks :: String -> String -> [String] -> [String]
+    chunks []     row acc      = row : acc
+    chunks (x:xs) row acc
+        | length row == c + 1 = chunks xs [x]      (row:acc)
+        | otherwise           = chunks xs (x:row) acc
+
+    (_, Coord _ c) = bounds b
 
 -- | Return starting state for a standard board.
 standardBoard :: Board
