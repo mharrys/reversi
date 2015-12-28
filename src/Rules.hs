@@ -5,7 +5,7 @@ import Coord (Coord)
 import Move (Move(..), Direction, directions, coordsInDirection)
 import Piece (Piece)
 
--- | Return nodes that will be flipped for a move at given board.
+-- | Return nodes that will be flipped after move on specified board.
 nodesToFlip :: Move -> Board -> [Node]
 nodesToFlip Skip           _ = []
 nodesToFlip (Move piece p) b = concatMap (\x -> captures x []) ps
