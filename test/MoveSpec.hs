@@ -40,41 +40,41 @@ spec = do
         let from = Coord 0 3
             boundary (Coord x y) = x >= 0 && y >= 0
             expected = [Coord 0 2, Coord 0 1, Coord 0 0]
-        pointsInDirection from west boundary `shouldBe` expected
+        coordsInDirection from west boundary `shouldBe` expected
     it "should walk east" $ do
         let from = Coord 0 0
             boundary (Coord x y) = x >= 0 && y <= 3
             expected = [Coord 0 1, Coord 0 2, Coord 0 3]
-        pointsInDirection from east boundary `shouldBe` expected
+        coordsInDirection from east boundary `shouldBe` expected
     it "should walk north" $ do
         let from = Coord 3 0
             boundary (Coord x y) = x >= 0 && y >= 0
             expected = [Coord 2 0, Coord 1 0, Coord 0 0]
-        pointsInDirection from north boundary `shouldBe` expected
+        coordsInDirection from north boundary `shouldBe` expected
     it "should walk south" $ do
         let from = Coord 0 0
             boundary (Coord x y) = x <= 3 && y >= 0
             expected = [Coord 1 0, Coord 2 0, Coord 3 0]
-        pointsInDirection from south boundary `shouldBe` expected
+        coordsInDirection from south boundary `shouldBe` expected
 
     it "should walk north west" $ do
         let from = Coord 3 3
             boundary (Coord x y) = x >= 0 && y >= 0
             expected = [Coord 2 2, Coord 1 1, Coord 0 0]
-        pointsInDirection from northWest boundary `shouldBe` expected
+        coordsInDirection from northWest boundary `shouldBe` expected
     it "should walk north east" $ do
         let from = Coord 3 3
             boundary (Coord x y) = x >= 0 && y <= 6
             expected = [Coord 2 4, Coord 1 5, Coord 0 6]
-        pointsInDirection from northEast boundary `shouldBe` expected
+        coordsInDirection from northEast boundary `shouldBe` expected
 
     it "should walk south west" $ do
         let from = Coord 3 3
             boundary (Coord x y) = x <= 6 && y >= 0
             expected = [Coord 4 2, Coord 5 1, Coord 6 0]
-        pointsInDirection from southWest boundary `shouldBe` expected
+        coordsInDirection from southWest boundary `shouldBe` expected
     it "should walk south east" $ do
         let from = Coord 3 3
             boundary (Coord x y) = x <= 6 && y <= 6
             expected = [Coord 4 4, Coord 5 5, Coord 6 6]
-        pointsInDirection from southEast boundary `shouldBe` expected
+        coordsInDirection from southEast boundary `shouldBe` expected

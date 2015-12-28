@@ -1,26 +1,34 @@
 module Board
-    ( Cell
-    , Board
+    ( Node
+    , Board(..)
     , standardBoard
     , squareBoard
-    , cell
-    , cells
-    , inside
-    , occupiedCells
-    , unoccupiedCells
+    , getNode
+    , getNodes
+    , hasNode
+    , isOccupied
+    , isOccupiedBy
+    , swapNode
+    , getOccupiedNodes
+    , getUnoccupiedNodes
     ) where
 
 import Data.Array
+import Data.Maybe (isJust)
 
 import Coord (Coord(..))
-import Piece (Piece(..))
-import Square (Square(..), occupied)
+import Piece (Piece(..), opponent)
 
-type Cell  = (Coord, Square)
-type Board = Array Coord Square
+type Node  = (Coord, Maybe Piece)
 
-showBoard :: Board -> String
-showBoard b = foldl (\acc x -> acc ++ show x) "" (elems b)
+-- | Describes a collection of nodes with coordinates.
+data Board = Board (Array Coord (Maybe Piece))
+
+instance Show Board where
+    show (Board b) = foldl (\acc x -> acc ++ showNode x) "" (elems b)
+      where
+        showNode Nothing  = "."
+        showNode (Just x) = show x
 
 -- | Return starting state for a standard board.
 standardBoard :: Board
@@ -29,39 +37,49 @@ standardBoard = squareBoard 8
 -- | Return starting state for a square board.
 squareBoard :: Int -> Board
 squareBoard size
-    | size < 4          = error "less than four squares"
+    | size < 4          = error "less than four nodes"
     | size `mod` 2 /= 0 = error "odd size"
-    | otherwise         = listArray bounds empty // (whites ++ blacks)
+    | otherwise         = Board $ listArray bounds empty // (whites ++ blacks)
   where
     bounds = (Coord 0 0, Coord (size - 1) (size - 1))
-    empty  = replicate (size * size) Empty
+    empty  = replicate (size * size) Nothing
     whites = [(Coord h0 h0, w), (Coord h1 h1, w)]
     blacks = [(Coord h1 h0, b), (Coord h0 h1, b)]
     h0     = (size - 1) `div` 2
     h1     = h0 + 1
-    w      = Occupied White
-    b      = Occupied Black
+    w      = Just White
+    b      = Just Black
 
--- | Return board cell.
-cell :: Board -> Coord -> Cell
-cell b p = (p, b ! p)
+-- | Return board node at coord.
+getNode :: Board -> Coord -> Node
+getNode (Board b) p = (p, b ! p)
 
--- | Return board cells.
-cells :: Board -> [Cell]
-cells = assocs
+-- | Return all board nodes.
+getNodes :: Board -> [Node]
+getNodes (Board b)= assocs b
 
--- | Validate if position is within board limit.
-inside :: Board -> Coord -> Bool
-inside b p = elem p $ indices b
+-- | Validate if board has node at coord.
+hasNode :: Board -> Coord -> Bool
+hasNode (Board b) p = elem p $ indices b
 
 -- | Validate if cell is occupied.
-occupiedCell :: Cell -> Bool
-occupiedCell (_, s) = occupied s
+isOccupied :: Node -> Bool
+isOccupied (_, s) = isJust s
 
--- | Return list of squares occupied by a board piece.
-occupiedCells :: Board -> [Cell]
-occupiedCells b = filter occupiedCell (cells b)
+-- | Validate if cell is occupied by specified board piece.
+isOccupiedBy :: Node -> Piece -> Bool
+isOccupiedBy (_, Nothing) _ = False
+isOccupiedBy (_, Just a)  b = a == b
 
--- | Return list of unoccupied cells.
-unoccupiedCells :: Board -> [Cell]
-unoccupiedCells b = filter (not . occupiedCell) (cells b)
+-- | Swap occupied piece on node to its opponent.
+swapNode :: Node -> Node
+swapNode (a, Nothing) = (a, Nothing)
+swapNode (a, Just b)  = (a, Just $ opponent b)
+
+-- | Return list of occupied nodes.
+getOccupiedNodes :: Board -> [Node]
+getOccupiedNodes b = filter isOccupied $ getNodes b
+
+-- | Return list of unoccupied nodes.
+getUnoccupiedNodes :: Board -> [Node]
+getUnoccupiedNodes b = filter (not . isOccupied) $ getNodes b

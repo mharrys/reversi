@@ -6,7 +6,6 @@ import Board
 import Coord
 import Move
 import Piece
-import Square
 import Rules
 
 main :: IO ()
@@ -37,4 +36,4 @@ cmpFlips :: Piece -> Int -> Int -> Board -> [Coord] -> Expectation
 cmpFlips p x y b cs = nodesToFlip move b `shouldBe` expected
   where
     move     = Move p (Coord x y)
-    expected = zip cs $ replicate (length cs) (Occupied (opponent p))
+    expected = zip cs $ replicate (length cs) (Just (opponent p))
