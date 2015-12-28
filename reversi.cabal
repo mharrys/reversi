@@ -16,7 +16,6 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     Piece
-                     , Square
                      , Coord
                      , Board
                      , Move
@@ -38,7 +37,6 @@ test-suite reversi-test
   hs-source-dirs:      test
   main-is:             Spec.hs
   other-modules:       PieceSpec
-                     , SquareSpec
                      , CoordSpec
                      , BoardSpec
                      , MoveSpec

@@ -7,7 +7,7 @@ import Data.Char (ord, isDigit, isAsciiLower)
 import Data.Ix
 import Text.Read (readMaybe)
 
--- | Describes coordinates for a square in a board.
+-- | Describes coordinates for a node in a board.
 data Coord = Coord Int Int deriving (Eq, Ord)
 
 instance Show Coord where
