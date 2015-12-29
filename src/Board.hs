@@ -42,7 +42,7 @@ instance Show Board where
         nodeStr (_, Nothing) = "."
         nodeStr (_, Just x)  = show x
 
--- | Convert board to a better human readable string representation.
+-- | Convert board to a more human readable string representation.
 toPrettyStr :: Board -> String
 toPrettyStr board@(Board b) = cols ++ rows
   where
