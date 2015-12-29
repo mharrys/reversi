@@ -9,11 +9,13 @@ module Board
     , hasNode
     , isOccupied
     , isOccupiedBy
+    , swapNodes
     , swapNode
     , getOccupiedNodes
     , getUnoccupiedNodes
     ) where
 
+import Control.Monad.State
 import Data.Array
 import Data.List (intercalate)
 import Data.Maybe (isJust)
@@ -100,6 +102,12 @@ isOccupied (_, s) = isJust s
 isOccupiedBy :: Node -> Piece -> Bool
 isOccupiedBy (_, Nothing) _ = False
 isOccupiedBy (_, Just a)  b = a == b
+
+-- | Swap nodes on specified board.
+swapNodes :: [Node] -> State Board ()
+swapNodes nodes = do
+    (Board b) <- get
+    put $ Board $ b // nodes
 
 -- | Swap occupied piece on node to its opponent.
 swapNode :: Node -> Node
