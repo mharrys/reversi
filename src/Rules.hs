@@ -5,10 +5,10 @@ import Coord (Coord)
 import Move (Move(..), Direction, directions, coordsInDirection)
 import Piece (Piece)
 
--- | Return nodes that will be flipped after move on specified board.
-nodesToFlip :: Move -> Board -> [Node]
-nodesToFlip Skip           _ = []
-nodesToFlip (Move piece p) b = concatMap (\x -> captures x []) ps
+-- | Return nodes that will be swapped after move on specified board.
+nodesToSwap :: Move -> Board -> [Node]
+nodesToSwap Skip           _ = []
+nodesToSwap (Move piece p) b = concatMap (\x -> captures x []) ps
   where
     -- walk and collect opponent pieces but must end with capturer piece
     captures :: [Node] -> [Node] -> [Node]
@@ -30,7 +30,7 @@ nodesToFlip (Move piece p) b = concatMap (\x -> captures x []) ps
 
 -- | Validate if move is allowed.
 isMoveValid :: Move -> Board -> Bool
-isMoveValid m b = null (nodesToFlip m b)
+isMoveValid m b = not . null $ nodesToSwap m b
 
 -- | Determine if piece has any valid move.
 hasValidMove :: Piece -> Board -> Bool

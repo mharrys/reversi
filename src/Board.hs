@@ -3,18 +3,21 @@ module Board
     , Board(..)
     , standardBoard
     , squareBoard
+    , toPrettyStr
     , getNode
     , getNodes
     , hasNode
     , isOccupied
     , isOccupiedBy
+    , swapNodes
     , swapNode
     , getOccupiedNodes
     , getUnoccupiedNodes
     ) where
 
+import Control.Monad.State
 import Data.Array
-import Data.List (intercalate)
+import Data.List (intercalate, unfoldr)
 import Data.Maybe (isJust)
 
 import Coord (Coord(..))
@@ -39,7 +42,7 @@ instance Show Board where
         nodeStr (_, Nothing) = "."
         nodeStr (_, Just x)  = show x
 
--- | Convert board to a better human readable string representation.
+-- | Convert board to a more human readable string representation.
 toPrettyStr :: Board -> String
 toPrettyStr board@(Board b) = cols ++ rows
   where
@@ -47,15 +50,11 @@ toPrettyStr board@(Board b) = cols ++ rows
     rows    = intercalate "\n" rowChunks
 
     rowChunks :: [String]
-    rowChunks = zipWith rowN ['1'..] $ chunks (show board) [] []
+    rowChunks = zipWith rowN ['1'..] $ chunks $ show board
       where
         rowN n row = n : ' ' : row
 
-    chunks :: String -> String -> [String] -> [String]
-    chunks []     row acc      = row : acc
-    chunks (x:xs) row acc
-        | length row == c + 1 = chunks xs [x]      (row:acc)
-        | otherwise           = chunks xs (x:row) acc
+    chunks = takeWhile (not . null) . unfoldr (Just . splitAt (c + 1))
 
     (_, Coord _ c) = bounds b
 
@@ -99,6 +98,12 @@ isOccupied (_, s) = isJust s
 isOccupiedBy :: Node -> Piece -> Bool
 isOccupiedBy (_, Nothing) _ = False
 isOccupiedBy (_, Just a)  b = a == b
+
+-- | Swap nodes on specified board.
+swapNodes :: [Node] -> State Board ()
+swapNodes nodes = do
+    (Board b) <- get
+    put $ Board $ b // nodes
 
 -- | Swap occupied piece on node to its opponent.
 swapNode :: Node -> Node
