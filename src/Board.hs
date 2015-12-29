@@ -3,6 +3,7 @@ module Board
     , Board(..)
     , standardBoard
     , squareBoard
+    , toPrettyStr
     , getNode
     , getNodes
     , hasNode
