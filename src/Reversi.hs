@@ -45,7 +45,7 @@ move m@(Move p c) = do
     let players' = headToLast (players r)
         board'   = execState (swapNodes swapped) (board r)
         swapped  = (c, Just p) : map swapNode nodes
-        nodes    = R.nodesToFlip m (board r)
+        nodes    = R.nodesToSwap m (board r)
     put $ r { board = board', players = players' }
 
 -- | Place first element in list at last position.
