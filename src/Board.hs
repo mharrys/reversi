@@ -17,7 +17,7 @@ module Board
 
 import Control.Monad.State
 import Data.Array
-import Data.List (intercalate)
+import Data.List (intercalate, unfoldr)
 import Data.Maybe (isJust)
 
 import Coord (Coord(..))
@@ -50,15 +50,11 @@ toPrettyStr board@(Board b) = cols ++ rows
     rows    = intercalate "\n" rowChunks
 
     rowChunks :: [String]
-    rowChunks = zipWith rowN ['1'..] $ chunks (show board) [] []
+    rowChunks = zipWith rowN ['1'..] $ chunks $ show board
       where
         rowN n row = n : ' ' : row
 
-    chunks :: String -> String -> [String] -> [String]
-    chunks []     row acc      = row : acc
-    chunks (x:xs) row acc
-        | length row == c + 1 = chunks xs [x]      (row:acc)
-        | otherwise           = chunks xs (x:row) acc
+    chunks = takeWhile (not . null) . unfoldr (Just . splitAt (c + 1))
 
     (_, Coord _ c) = bounds b
 
