@@ -30,8 +30,8 @@ data Board = Board (Array Coord (Maybe Piece))
 
 instance Show Board where
     show board@(Board b) =
-        -- generate a grid of nodes and check if node appears i board in order
-        -- to allow other board shapes
+        -- generate grid of nodes and filter nodes that do not appear in the
+        -- board since this will allow other board shapes
         concatMap toStr $ range $ bounds b
       where
         toStr :: Coord -> String
