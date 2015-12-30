@@ -17,6 +17,7 @@ module Reversi.Move
 import Reversi.Coord (Coord(..))
 import Reversi.Piece (Piece(..))
 
+-- | Describes a possible move on the board.
 data Move = Skip
           | Move Piece Coord
           deriving (Show, Eq)
