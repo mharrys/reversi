@@ -1,4 +1,4 @@
-module Board
+module Reversi.Board
     ( Node
     , Board(..)
     , standardBoard
@@ -19,8 +19,8 @@ import Data.Array
 import Data.List (intercalate, unfoldr)
 import Data.Maybe (isJust)
 
-import Coord (Coord(..))
-import Piece (Piece(..), opponent)
+import Reversi.Coord (Coord(..))
+import Reversi.Piece (Piece(..), opponent)
 
 -- | Describes a placement in a board.
 type Node = (Coord, Maybe Piece)

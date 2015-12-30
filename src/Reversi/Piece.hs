@@ -1,4 +1,4 @@
-module Piece
+module Reversi.Piece
     ( Piece(..)
     , opponent
     ) where

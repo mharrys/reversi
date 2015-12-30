@@ -4,11 +4,7 @@ import Control.Monad.State
 import System.IO
 import Text.Read (readMaybe)
 
-import Board
-import Coord
-import Move
 import Reversi
-import Piece
 
 main :: IO ()
 main = do

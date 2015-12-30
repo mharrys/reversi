@@ -2,9 +2,9 @@ module BoardSpec where
 
 import Test.Hspec
 
-import Coord
-import Board
-import Piece
+import Reversi.Coord
+import Reversi.Board
+import Reversi.Piece
 
 main :: IO ()
 main = hspec spec

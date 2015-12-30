@@ -2,8 +2,8 @@ module MoveSpec where
 
 import Test.Hspec
 
-import Coord
-import Move
+import Reversi.Coord
+import Reversi.Move
 
 main :: IO ()
 main = hspec spec

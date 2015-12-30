@@ -2,7 +2,7 @@ module PieceSpec where
 
 import Test.Hspec
 
-import Piece
+import Reversi.Piece
 
 main :: IO ()
 main = hspec spec

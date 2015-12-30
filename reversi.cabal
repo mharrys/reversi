@@ -15,11 +15,11 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Piece
-                     , Coord
-                     , Board
-                     , Move
-                     , Rules
+  exposed-modules:     Reversi.Piece
+                     , Reversi.Coord
+                     , Reversi.Board
+                     , Reversi.Move
+                     , Reversi.Rules
                      , Reversi
   build-depends:       base >= 4.7 && < 5
                      , array

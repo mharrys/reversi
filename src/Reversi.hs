@@ -1,12 +1,22 @@
-module Reversi where
+module Reversi
+    ( Reversi(..)
+    , module Export
+    , start
+    , getPlayerInTurn
+    , hasValidMove
+    , isMoveValid
+    , isActive
+    , move
+    ) where
 
 import Control.Monad.State
 
-import Board
-import Move
-import Piece
+import Reversi.Board as Export
+import Reversi.Coord as Export
+import Reversi.Move  as Export
+import Reversi.Piece as Export
 
-import qualified Rules as R
+import qualified Reversi.Rules as Rules
 
 -- | Describes a Reversi game.
 data Reversi = Reversi
@@ -24,11 +34,11 @@ getPlayerInTurn r = head $ players r
 
 -- | Validate if player can make any move.
 hasValidMove :: Reversi -> Piece -> Bool
-hasValidMove r p = R.hasValidMove p (board r)
+hasValidMove r p = Rules.hasValidMove p (board r)
 
 -- | Validate if specified move is valid.
 isMoveValid :: Reversi -> Move -> Bool
-isMoveValid r m = R.isMoveValid m (board r)
+isMoveValid r m = Rules.isMoveValid m (board r)
 
 -- | Validate if game is in progress or over.
 isActive :: Reversi -> Bool
@@ -45,7 +55,7 @@ move m@(Move p c) = do
     let players' = headToLast (players r)
         board'   = swapNodes (board r) swapped
         swapped  = (c, Just p) : map swapNode nodes
-        nodes    = R.nodesToSwap m (board r)
+        nodes    = Rules.nodesToSwap m (board r)
     put $ r { board = board', players = players' }
 
 -- | Place first element in list at last position.

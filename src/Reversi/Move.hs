@@ -1,4 +1,4 @@
-module Move
+module Reversi.Move
     ( Move(..)
     , Boundary
     , Direction
@@ -14,8 +14,8 @@ module Move
     , coordsInDirection
     ) where
 
-import Coord (Coord(..))
-import Piece (Piece(..))
+import Reversi.Coord (Coord(..))
+import Reversi.Piece (Piece(..))
 
 data Move = Skip
           | Move Piece Coord

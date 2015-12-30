@@ -1,13 +1,13 @@
-module Rules
+module Reversi.Rules
     ( nodesToSwap
     , isMoveValid
     , hasValidMove
     ) where
 
-import Board (Board, Node, getNode, hasNode, isOccupied, isOccupiedBy, getUnoccupiedNodes)
-import Coord (Coord)
-import Move (Move(..), Direction, directions, coordsInDirection)
-import Piece (Piece)
+import Reversi.Board (Board, Node, getNode, hasNode, isOccupied, isOccupiedBy, getUnoccupiedNodes)
+import Reversi.Coord (Coord)
+import Reversi.Move (Move(..), Direction, directions, coordsInDirection)
+import Reversi.Piece (Piece)
 
 -- | Return nodes that will be swapped after move on specified board.
 nodesToSwap :: Move -> Board -> [Node]

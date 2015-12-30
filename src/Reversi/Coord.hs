@@ -1,4 +1,4 @@
-module Coord
+module Reversi.Coord
     ( Coord(..)
     ) where
 

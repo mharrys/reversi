@@ -2,11 +2,11 @@ module RulesSpec where
 
 import Test.Hspec
 
-import Board
-import Coord
-import Move
-import Piece
-import Rules
+import Reversi.Board
+import Reversi.Coord
+import Reversi.Move
+import Reversi.Piece
+import Reversi.Rules
 
 main :: IO ()
 main = hspec spec
