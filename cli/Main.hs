@@ -55,7 +55,7 @@ displayPrompt :: IO ()
 displayPrompt = displayStr "> "
 
 displayBoard :: Board -> IO ()
-displayBoard b = displayStrLn $ toPrettyStr b
+displayBoard b = displayStr $ toPrettyStr b
 
 displayPlayerInTurn :: Piece -> IO ()
 displayPlayerInTurn p = displayStrLn $ "Current player: " ++ show p

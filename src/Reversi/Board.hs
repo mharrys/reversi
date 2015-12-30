@@ -16,7 +16,8 @@ module Reversi.Board
     ) where
 
 import Data.Array
-import Data.List (intercalate, unfoldr)
+import Data.Char (isPrint)
+import Data.List (intercalate, intersperse)
 import Data.Maybe (isJust)
 
 import Reversi.Coord (Coord(..))
@@ -29,56 +30,63 @@ type Node = (Coord, Maybe Piece)
 data Board = Board (Array Coord (Maybe Piece))
 
 instance Show Board where
-    show board@(Board b) =
-        -- generate grid of nodes and filter nodes that do not appear in the
-        -- board, this will allow other board shapes
-        size ++ " " ++ concatMap toStr (range $ bounds b)
+    show board@(Board b) = concatMap convert $ zip [0..] (range $ bounds b)
       where
-        size     = show lo ++ " " ++ show hi
-        (lo, hi) = bounds b
+        convert :: (Int, Coord) -> String
+        convert (a, b)
+            | newLine   = '\n' : toStr b
+            | otherwise = toStr b
+          where
+            newLine = a /= 0 && a `mod` cols == 0
+            cols    = getNumCols board
 
         toStr :: Coord -> String
         toStr p
             | hasNode board p = nodeStr (getNode board p)
             | otherwise       = " "
-
-        nodeStr (_, Nothing) = "."
-        nodeStr (_, Just x)  = show x
+          where
+            nodeStr (_, Nothing) = "."
+            nodeStr (_, Just x)  = show x
 
 instance Read Board where
     readsPrec _ []    = []
     readsPrec _ input = [(Board $ array bounds nodes, [])]
       where
-        nodes         = fromStr (range bounds) str
-        bounds        = (read lo :: Coord, read hi :: Coord)
-        [lo, hi, str] = words input
+        nodes   = toNodes (range bounds) (filter isPrint input)
+        bounds  = (Coord 0 0, Coord numRows numCols)
+        numCols = length (head rows) - 1
+        numRows = length rows - 1
+        rows    = lines input
 
-        fromStr :: [Coord] -> String -> [Node]
-        fromStr []     _  = []
-        fromStr _      [] = []
-        fromStr (x:xs) (y:ys)
-            | y /= ' '    = toNode : fromStr xs ys
-            | otherwise   = fromStr xs ys
+        toNodes :: [Coord] -> String -> [Node]
+        toNodes []     _            = []
+        toNodes _      []           = []
+        toNodes (x:xs) (y:ys)
+            | y /= ' '  = toNode y : toNodes xs ys
+            | otherwise = toNodes xs ys
           where
-            toNode = case y of
-                'w' -> (x, Just White)
-                'b' -> (x, Just Black)
-                _   -> (x, Nothing)
+            toNode 'w' = (x, Just White)
+            toNode 'b' = (x, Just Black)
+            toNode _   = (x, Nothing)
 
 -- | Convert board to a more human readable string representation.
 toPrettyStr :: Board -> String
-toPrettyStr board@(Board b) = cols ++ rows
+toPrettyStr board@(Board b) = top ++ rest
   where
-    cols = "  " ++ take (c + 1) ['a'..] ++ "\n"
-    rows = intercalate "\n" rowChunks
+    top     = replicate indent ' ' ++ letters ++ "\n"
+    letters = sparse $ take numCols ['a'..]
+    numCols = getNumCols board
+    rest    = unlines $ zipWith left [1..] rows
 
-    rowChunks :: [String]
-    rowChunks = zipWith rowN ['1'..] $ chunks $ drop 6 $ show board
+    left :: Int -> String -> String
+    left a b = num ++ spaces ++ b
       where
-        rowN n row = n : ' ' : row
-        chunks = takeWhile (not . null) . unfoldr (Just . splitAt (c + 1))
+        spaces = replicate (indent - length num) ' '
+        num    = show a
 
-    (_, Coord _ c) = bounds b
+    indent  = (length rows `div` 10) + 2
+    rows    = map sparse $ lines $ show board
+    sparse  = intersperse ' '
 
 -- | Return starting state for a standard board.
 standardBoard :: Board
@@ -101,6 +109,18 @@ squareBoard size
     h1     = h0 + 1
     w      = Just White
     b      = Just Black
+
+-- | Return number of columns.
+getNumCols :: Board -> Int
+getNumCols (Board b) = cols + 1
+  where
+    (_, Coord _ cols) = bounds b
+
+-- | Return number of rows.
+getNumRows :: Board -> Int
+getNumRows (Board b) = rows + 1
+  where
+    (_, Coord rows _) = bounds b
 
 -- | Return board node at coord.
 getNode :: Board -> Coord -> Node
