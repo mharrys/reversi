@@ -45,19 +45,38 @@ instance Show Board where
         nodeStr (_, Nothing) = "."
         nodeStr (_, Just x)  = show x
 
+instance Read Board where
+    readsPrec _ []    = []
+    readsPrec _ input = [(Board $ array bounds nodes, [])]
+      where
+        nodes         = fromStr (range bounds) str
+        bounds        = (read lo :: Coord, read hi :: Coord)
+        [lo, hi, str] = words input
+
+        fromStr :: [Coord] -> String -> [Node]
+        fromStr []     _  = []
+        fromStr _      [] = []
+        fromStr (x:xs) (y:ys)
+            | y /= ' '    = toNode : fromStr xs ys
+            | otherwise   = fromStr xs ys
+          where
+            toNode = case y of
+                'w' -> (x, Just White)
+                'b' -> (x, Just Black)
+                _   -> (x, Nothing)
+
 -- | Convert board to a more human readable string representation.
 toPrettyStr :: Board -> String
 toPrettyStr board@(Board b) = cols ++ rows
   where
-    cols    = "  " ++ take (c + 1) ['a'..] ++ "\n"
-    rows    = intercalate "\n" rowChunks
+    cols = "  " ++ take (c + 1) ['a'..] ++ "\n"
+    rows = intercalate "\n" rowChunks
 
     rowChunks :: [String]
-    rowChunks = zipWith rowN ['1'..] $ chunks $ show board
+    rowChunks = zipWith rowN ['1'..] $ chunks $ drop 6 $ show board
       where
         rowN n row = n : ' ' : row
-
-    chunks = takeWhile (not . null) . unfoldr (Just . splitAt (c + 1))
+        chunks = takeWhile (not . null) . unfoldr (Just . splitAt (c + 1))
 
     (_, Coord _ c) = bounds b
 
@@ -70,12 +89,12 @@ squareBoard :: Int -> Board
 squareBoard size
     | size < 4          = error "less than four nodes"
     | size `mod` 2 /= 0 = error "odd size"
-    | otherwise         = Board $ listArray bounds empty // (whites ++ blacks)
+    | otherwise         = Board $ listArray bounds empty // (ws ++ bs)
   where
     bounds = (Coord 0 0, Coord (size - 1) (size - 1))
-    empty  = replicate (size * size) Nothing
-    whites = [(Coord h0 h0, w), (Coord h1 h1, w)]
-    blacks = [(Coord h1 h0, b), (Coord h0 h1, b)]
+    empty  = repeat Nothing
+    ws     = [(Coord h0 h0, w), (Coord h1 h1, w)]
+    bs     = [(Coord h1 h0, b), (Coord h0 h1, b)]
     h0     = (size - 1) `div` 2
     h1     = h0 + 1
     w      = Just White
