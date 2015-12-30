@@ -31,9 +31,12 @@ data Board = Board (Array Coord (Maybe Piece))
 instance Show Board where
     show board@(Board b) =
         -- generate grid of nodes and filter nodes that do not appear in the
-        -- board since this will allow other board shapes
-        concatMap toStr $ range $ bounds b
+        -- board, this will allow other board shapes
+        size ++ " " ++ concatMap toStr (range $ bounds b)
       where
+        size     = show lo ++ " " ++ show hi
+        (lo, hi) = bounds b
+
         toStr :: Coord -> String
         toStr p
             | hasNode board p = nodeStr (getNode board p)
