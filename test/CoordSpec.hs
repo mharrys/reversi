@@ -4,6 +4,7 @@ import Control.Exception (evaluate)
 
 import Test.Hspec
 import Test.QuickCheck
+import Text.Read (readMaybe)
 
 import Coord
 
@@ -40,3 +41,6 @@ coord s x y = readMaybeCoord s `shouldBe` Just (Coord x y)
 
 nothing :: String -> Expectation
 nothing s = readMaybeCoord s `shouldBe` Nothing
+
+readMaybeCoord :: String -> Maybe Coord
+readMaybeCoord = readMaybe

@@ -2,6 +2,7 @@ module Main where
 
 import Control.Monad.State
 import System.IO
+import Text.Read (readMaybe)
 
 import Board
 import Coord
@@ -47,7 +48,7 @@ getMove r p = do
 getCoord :: IO Coord
 getCoord = do
     displayPrompt
-    maybeCoord <- fmap readMaybeCoord getLine
+    maybeCoord <- fmap readMaybe getLine :: IO (Maybe Coord)
     case maybeCoord of
         Nothing -> do
             displayStrLn "Expected board coordinates, for example: f4"

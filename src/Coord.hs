@@ -1,11 +1,9 @@
 module Coord
     ( Coord(..)
-    , readMaybeCoord
     ) where
 
 import Data.Char (ord, isDigit, isAsciiLower)
 import Data.Ix
-import Text.Read (readMaybe)
 
 -- | Describes coordinates for a node in a board.
 data Coord = Coord Int Int deriving (Eq, Ord)
@@ -37,6 +35,3 @@ instance Ix Coord where
 
     inRange (Coord x1 y1, Coord x2 y2) (Coord x3 y3) =
         inRange ((x1, y1), (x2, y2)) (x3, y3)
-
-readMaybeCoord :: String -> Maybe Coord
-readMaybeCoord = readMaybe
