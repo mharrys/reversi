@@ -43,7 +43,7 @@ move Skip         = do
 move m@(Move p c) = do
     r <- get
     let players' = headToLast (players r)
-        board'   = execState (swapNodes swapped) (board r)
+        board'   = swapNodes (board r) swapped
         swapped  = (c, Just p) : map swapNode nodes
         nodes    = R.nodesToSwap m (board r)
     put $ r { board = board', players = players' }

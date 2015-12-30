@@ -15,7 +15,6 @@ module Board
     , getUnoccupiedNodes
     ) where
 
-import Control.Monad.State
 import Data.Array
 import Data.List (intercalate, unfoldr)
 import Data.Maybe (isJust)
@@ -100,10 +99,8 @@ isOccupiedBy (_, Nothing) _ = False
 isOccupiedBy (_, Just a)  b = a == b
 
 -- | Swap nodes on specified board.
-swapNodes :: [Node] -> State Board ()
-swapNodes nodes = do
-    (Board b) <- get
-    put $ Board $ b // nodes
+swapNodes :: Board -> [Node] -> Board
+swapNodes (Board b) nodes = Board $ b // nodes
 
 -- | Swap occupied piece on node to its opponent.
 swapNode :: Node -> Node
