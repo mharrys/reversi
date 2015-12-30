@@ -82,14 +82,16 @@ toPrettyStr board@(Board b) = cols ++ rows
 
 -- | Return starting state for a standard board.
 standardBoard :: Board
-standardBoard = squareBoard 8
+standardBoard = b
+  where
+    Right b = squareBoard 8
 
 -- | Return starting state for a square board.
-squareBoard :: Int -> Board
+squareBoard :: Int -> Either String Board
 squareBoard size
-    | size < 4          = error "less than four nodes"
-    | size `mod` 2 /= 0 = error "odd size"
-    | otherwise         = Board $ listArray bounds empty // (ws ++ bs)
+    | size < 4          = Left "less than four nodes"
+    | size `mod` 2 /= 0 = Left "odd size"
+    | otherwise         = Right $ Board $ listArray bounds empty // (ws ++ bs)
   where
     bounds = (Coord 0 0, Coord (size - 1) (size - 1))
     empty  = repeat Nothing
