@@ -1,4 +1,8 @@
-module Rules where
+module Rules
+    ( nodesToSwap
+    , isMoveValid
+    , hasValidMove
+    ) where
 
 import Board (Board, Node, getNode, hasNode, isOccupied, isOccupiedBy, getUnoccupiedNodes)
 import Coord (Coord)
