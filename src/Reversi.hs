@@ -1,6 +1,10 @@
 module Reversi
     ( Reversi(..)
-    , module Export
+    , Board(..)
+    , Coord(..)
+    , Move(..)
+    , Piece(..)
+    , toPrettyStr
     , start
     , getPlayerInTurn
     , hasValidMove
@@ -11,10 +15,10 @@ module Reversi
 
 import Control.Monad.State
 
-import Reversi.Board as Export
-import Reversi.Coord as Export
-import Reversi.Move  as Export
-import Reversi.Piece as Export
+import Reversi.Board
+import Reversi.Coord
+import Reversi.Move
+import Reversi.Piece
 
 import qualified Reversi.Rules as Rules
 
