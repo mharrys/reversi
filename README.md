@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mharrys/reversi.svg?branch=master)](https://travis-ci.org/mharrys/reversi)
+
 Reversi
 =======
 Implementation of the classic board game Reversi (also known as Othello) in Haskell.
