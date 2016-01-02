@@ -50,15 +50,14 @@ spec =
                 hasValidMove Black b `shouldBe` True
         context "game in progress" $ do
             it "should allow multiple captures in one direction" $ do
-                let b = read "\
-                    \........\n\
-                    \...w....\n\
-                    \...w....\n\
-                    \...w....\n\
-                    \...b....\n\
-                    \........\n\
-                    \........\n\
-                    \........" :: Board
+                let b = read "........\
+                             \...w....\
+                             \...w....\
+                             \...w....\
+                             \...b....\
+                             \........\
+                             \........\
+                             \........" :: Board
                 cmpSwaps Black 0 3 b [ Coord 3 3
                                      , Coord 2 3
                                      , Coord 1 3
@@ -66,15 +65,14 @@ spec =
                 hasValidMove White b `shouldBe` True
                 hasValidMove Black b `shouldBe` True
             it "should allow multiple captures in multiple directions" $ do
-                let b = read "\
-                    \b.......\n\
-                    \.w......\n\
-                    \..w.....\n\
-                    \...w....\n\
-                    \.....wwb\n\
-                    \........\n\
-                    \........\n\
-                    \........" :: Board
+                let b = read "b.......\
+                             \.w......\
+                             \..w.....\
+                             \...w....\
+                             \.....wwb\
+                             \........\
+                             \........\
+                             \........" :: Board
                 cmpSwaps Black 4 4 b [ Coord 4 6
                                      , Coord 4 5
                                      , Coord 1 1
@@ -84,15 +82,14 @@ spec =
                 hasValidMove White b `shouldBe` False
                 hasValidMove Black b `shouldBe` True
             it "should allow captures not ending with the capturer piece" $ do
-                let b = read "\
-                    \.b......\n\
-                    \bb..bb.w\n\
-                    \........\n\
-                    \b...b...\n\
-                    \.b...b..\n\
-                    \.bb.....\n\
-                    \.......w\
-                    \........" :: Board
+                let b = read ".b......\
+                             \bb..bb.w\
+                             \........\
+                             \b...b...\
+                             \.b...b..\
+                             \.bb.....\
+                             \.......w\
+                             \........" :: Board
                 cmpValid White 0 1 b False
                 cmpValid White 3 1 b False
                 cmpValid White 4 0 b False
@@ -106,15 +103,14 @@ spec =
                 hasValidMove Black b `shouldBe` False
         context "game over before grid is filled" $
             it "should have not more valid moves for both players" $ do
-                let b = read "\
-                    \wwwwwwww\n\
-                    \wwwwwwww\n\
-                    \wwwwwwww\n\
-                    \wwwwwww.\n\
-                    \wwwwww..\n\
-                    \wwwwww.b\n\
-                    \wwwwwww.\n\
-                    \wwwwwwww" :: Board
+                let b = read "wwwwwwww\
+                             \wwwwwwww\
+                             \wwwwwwww\
+                             \wwwwwww.\
+                             \wwwwww..\
+                             \wwwwww.b\
+                             \wwwwwww.\
+                             \wwwwwwww" :: Board
                 hasValidMove White b `shouldBe` False
                 hasValidMove Black b `shouldBe` False
 
